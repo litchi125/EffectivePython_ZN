@@ -427,4 +427,263 @@ print(formatted)
 Max loves food. See Max cook.
 ~~~
 
-​		如果必须对格式化的值重复一些小的修改，那么这尤其令人恼火，而且容易出错。
+​		如果必须对格式化的值重复一些小的修改，那么这尤其令人恼火，而且容易出错。例如，如果这次要填的是name.title()而不是name本身，就需要提醒自己，把所有的name都改成name.title()。如果有的地方改了，有的地方没改，那输出的结果可能就不一致了：
+
+~~~python
+name = 'brad'
+formatted = template % (name.title(), name.title())
+print(formatted)
+
+>>>
+Brad loves food. See Brad cook.
+
+~~~
+
+​		为了结果这个问题，Python不仅可以对元组进行%操作，也可以对字典类型进行%操作。格式字符串里面的说明符与dict里面的键以相应的名称对应起来，例如%(keys)s这个说明符，疑似就是用字符串(s)来表示dict里面名为key的那个键所对应的值。这里，通过这种方法解决刚才讲到的第一个缺点，也就是用%操作符两侧的顺序不匹配问题：
+
+```python
+key = 'my_var'
+value = 1.234
+old_way = '%-10s = %.2f' % (key, value)
+new_way = '%(key)-10s = %(value).2f' % {
+    'key': key, 'value': value}  # Original
+reordered = '%(key)-10s = %(value).2f' % {
+    'value': value, 'key': key}  # Swapped
+print(old_way)
+print(new_way)
+print(reordered)
+
+>>>
+my_var     = 1.23
+my_var     = 1.23
+my_var     = 1.23
+```
+
+​		在格式化字符串时使用字典也解决了上面讲到的第三个问题，也就是用同一个值替换多个格式化说明符的问题。改用这种写法之后，我们就不用在%右侧重复这个值了：
+
+```python
+name = 'Max'
+template = '%s loves food. See %s cook.'
+before = template % (name, name) # Tuple
+template = '%(name)s loves food. See %(name)s cook.'
+after = template % {'name': name} # Dictionary
+print(before)
+print(after)
+
+>>>
+Max loves food. See Max cook.
+Max loves food. See Max cook.
+```
+
+​		然而，字典格式化字符串的方法又会带来新的问题。例如上面提到的第二个关于格式化前对值的最小修改问题，字典格式化会让格式化表达式会变得更长，视觉上也更混乱，因为在格式化表达式之前，值的右侧会出现字典键和冒号操作符：
+
+```python
+pantry = [
+    ('avocados', 1.25),
+    ('bananas', 2.5),
+    ('cherries', 15),
+]
+for i, (item, count) in enumerate(pantry):
+    before = '#%d: %-10s = %d' % (
+        i + 1,
+        item.title(),
+        round(count))
+    after = '#%(loop)d: %(item)-10s = %(count)d' % {
+        'loop': i + 1,
+        'item': item.title(),
+        'count': round(count),
+    }
+    print(before)
+    print(after)
+
+>>>
+#1: Avocados   = 1
+#1: Avocados   = 1
+#2: Bananas    = 2
+#2: Bananas    = 2
+#3: Cherries   = 15
+#3: Cherries   = 15
+```
+
+​		在格式化表达式时使用字典还会增加冗长，这是Python中c风格表达式格式化的问题#4。每个键必须至少被指定两次——一次是在格式说明符中，一次是在字典中作为键，还有一次可能是在包含字典值的变量名中:
+
+```python
+soup = 'lentil'
+formatted = 'Today\'s soup is %(soup)s.' % {'soup': soup}
+print(formatted)
+
+>>>
+Today's soup is lentil.
+```
+
+​		除了重复的字符外，这种冗余会导致使用字典的格式化表达式很长。这些表达式通常必须跨多行，格式字符串跨多行连接，而字典赋值在格式化中每个值只有一行:
+
+```python
+menu = {
+    'soup': 'lentil',
+    'oyster': 'kumamoto',
+    'special': 'schnitzel',
+}
+template = ('Today\'s soup is %(soup)s, '
+            'buy one get two %(oyster)s oysters, '
+            'and our special entrée is %(special)s.')
+formatted = template % menu
+print(formatted)
+
+>>>
+Today's soup is lentil, buy one get two kumamoto oysters, and our special entrée is schnitzel.
+```
+
+​		要理解这个格式表达式将输出什么样的结果，必须在格式字符串和字典的行之间来回观察。这种脱节使得很难发现错误，如果需要在格式化之前对任何值进行小的修改，可读性就会变得更糟。
+
+​		一定会有更好的办法才对！
+
+**内置的format函数与str类的format方法**
+
+​		Python3中添加了高级字符串格式化（advanced string formatting）机制，它的表达能力比C风格采用的%操作要强。针对单个Python值，通过内置的format函数可以很好的实现所需。例如，通过逗号表示千位分隔符，^表示居中对齐：
+
+```python
+a = 1234.5678
+formatted = format(a, ',.2f')
+print(formatted)
+b = 'my string'
+formatted = format(b, '^20s')
+print('*', formatted, '*')
+
+>>>
+1,234.57
+*      my string       *
+```
+
+​		针对str类型，使用内置的format方法可以同时格式化对个值。这种方法，摒弃了C风格的%，而是采用{}充当占位符。默认情况下，格式字符串中的占位符被传递给format方法的相应位置参数替换，这些参数按它们出现的顺序传递：
+
+~~~python
+key = 'my_var'
+value = 1.234
+formatted = '{} = {}'.format(key, value)
+print(formatted)
+
+>>>
+my_var = 1.234
+~~~
+
+​		在每个占位符中，你可以选择提供一个冒号，后面跟着格式说明符，以自定义值如何转换为字符串(请参阅帮助('FORMATTING')了解全部选项):
+
+~~~python
+key = 'my_var'
+value = 1.234
+formatted = '{:<10} = {:.2f}'.format(key, value)
+print(formatted)
+>>>
+my_var = 1.23
+~~~
+
+​		可以这样理解这种格式化的方法：系统把str.format方法接受到的每个值传递给内置的format函数，并找到这个值在字符串中对应的{}，同时将{}里面写的格式也传递给format函数，例如系统处理value时，传的就是format(value,'.2f')。然后，系统会把format函数所返回的结果卸载真个格式化字符串{}所在的位置。另外。每个类都可以通过__ format__这个内置方法制定相应的逻辑，这样的话format函数在把类实例转换成字符串时，就会按照这个逻辑转换。
+
+​		C风格格式化采用%来应道格式说明符，所以如果这个符号按照原样输出，就必须转义，也就是连写两个%%。同理，在调用str.format的时候，如果想把str中{、}输出，也需要转义：
+
+~~~python
+print('%.2f%%' % 12.5)
+print('{} replaces {{}}'.format(1.23))
+>>>
+12.50%
+1.23 replaces {}
+~~~
+
+​		在花括号内，还可以指定传递给format方法用于替换占位符的参数的位置索引。这允许更新格式字符串来重新排序输出，而不需要你也改变格式表达式的右边，从而解决上面的第一个问题:
+
+~~~python
+key = 'my_var'
+value = 1.234
+formatted = '{1} = {0}'.format(key, value)
+print(formatted)
+>>>
+1.234 = my_var
+~~~
+
+​		同样的位置索引也可以在格式字符串中被多次引用，而不需要将值多次传递给格式方法，这从上到下解决了第三个问题：
+
+~~~python
+formatted = '{0} loves food. See {0} cook.'.format(name)
+print(formatted)
+>>>
+Max loves food. See Max cook.
+~~~
+
+​		不幸的是，新的格式方法并不能解决上面的第二问题，当需要在格式化值之前对其进行小的修改时，会使代码难以阅读。新旧选项之间的可读性几乎没有差别，它们也同样繁杂：
+
+~~~python
+pantry = [
+    ('avocados', 1.25),
+    ('bananas', 2.5),
+    ('cherries', 15),
+]
+for i, (item, count) in enumerate(pantry):
+    old_style = '#%d: %-10s = %d' % (
+    i + 1,
+    item.title(),
+    round(count))
+    new_style = '#{}: {:<10s} = {}'.format(
+    i + 1,
+    item.title(),
+    round(count))
+    print(old_style)
+    print(new_style)
+
+>>>
+#1: Avocados   = 1
+#1: Avocados   = 1
+#2: Bananas    = 2
+#2: Bananas    = 2
+#3: Cherries   = 15
+#3: Cherries   = 15
+~~~
+
+​		str.format方法中使用的说明符还有更高级的选项，比如在占位符中使用字典键和列表索引的组合，以及将值强制转换为Unicode和repr字符串:
+
+~~~python
+menu = {
+    'soup': 'lentil',
+    'oyster': 'kumamoto',
+    'special': 'schnitzel',
+}
+formatted = 'First letter is {menu[oyster][0]!r}'.format(
+menu=menu)
+print(formatted)
+>>>
+First letter is 'k'
+~~~
+
+​		但是这些特性并不能帮助减少第四个问题中的重复键的冗余。例如，这里我比较了在C风格的格式化表达式中使用字典的冗长，以及向format方法传递关键字参数的新风格
+
+```python
+    old_template = (
+        'Today\'s soup is %(soup)s, '
+        'buy one get two %(oyster)s oysters, '
+        'and our special entrée is %(special)s.')
+    old_formatted = old_template % {
+        'soup': 'lentil',
+        'oyster': 'kumamoto',
+        'special': 'schnitzel',
+    }
+    new_template = (
+        'Today\'s soup is {soup}, '
+        'buy one get two {oyster} oysters, '
+        'and our special entrée is {special}.')
+    new_formatted = new_template.format(
+        soup='lentil',
+        oyster='kumamoto',
+        special='schnitzel',
+    )
+    print(old_formatted)
+    print(new_formatted)
+>>>
+Today's soup is lentil, buy one get two kumamoto oysters, and our special entrée is schnitzel.
+Today's soup is lentil, buy one get two kumamoto oysters, and our special entrée is schnitzel.
+```
+
+​		这种风格稍微不那么混乱，因为它消除了字典中的一些引号和格式说明符中的一些字符，但它几乎没有什么吸引力。此外，在占位符中使用字典键和索引的高级特性只提供了Python的一小部分表达功能。这种表达性的缺乏是如此有限，以至于从整体上削弱了str格式方法的价值。
+
+​		考虑到这些缺点和C风格格式表达式仍然存在第二和第四个问题，通常避免使用str.format。当然，我们还是必须掌握新的格式说明符所使用的这套迷你语言（mini language），我们可以在str的{}里面按照这套迷你语言的规则来指定冒号右侧的格式。系统内置的format函数也会使用这套规则。除此之外，str.format方法就只有历史意义了，他让我们可以在这套机制的基础之上学习Python新引入的f-string。
+
+**差值格式字符串**
