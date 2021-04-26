@@ -809,3 +809,109 @@ My number is 1.235
 * F-strings是一种用于将值格式化为字符串的新语法，它解决了c风格格式字符串的最大问题。
 * F-string简洁但功能强大，因为它们允许任意Python表达式直接嵌入到格式说明符中。
 
+## 第5条  用辅助函数代替复杂的表达式
+
+​		Python简洁的语法使得编写实现大量逻辑的单行表达式变得很容易。例如，假设我想解码来自URL的查询字符串。这里，每个查询字符串参数表示一个整数值：
+
+```python
+from urllib.parse import parse_qs
+my_values = parse_qs('red=5&blue=0&green=',
+keep_blank_values=True)
+print(repr(my_values))
+
+>>>
+{'red': ['5'], 'blue': ['0'], 'green': ['']}
+```
+
+​		在解析字符串参数时，有的可能有多个参数，有的可能只是单一参数，有的可能是空白值，可能还会遇到一些没有提供参数的情况。在结果字典上使用get方法将在每种情况下返回不同的值：
+
+```python
+from urllib.parse import parse_qs
+my_values = parse_qs('red=5&blue=0&green=',
+keep_blank_values=True)
+# print(my_values)
+# print(repr(my_values))
+print('Red: ', my_values.get('red'))
+print('Green: ', my_values.get('green'))
+print('Opacity: ', my_values.get('opacity'))
+>>>
+Red:  ['5']
+Green:  ['']
+Opacity:  None
+```
+
+​		当参数不存在或者为空时，可以给定默认值0。对于这样的情况，采用Boolean表达式是更好的选择，不值得写完成的if语句或者辅助函数。
+
+​		Python的Boolean表达式这种语法写起来更简单，Python会把空字符串、空列表以及0都当做False。因此，只需要把get方法吵到的结果放在or操作符的左边，并在右边写上0就可以了。这样的话，只要左面的表达式为False，name整个表达式的值就自然被评估为右边那个表达式的值，也就是0.
+
+```python
+red = my_values.get('red', [''])[0] or 0
+green = my_values.get('green', [''])[0] or 0
+opacity = my_values.get('opacity', [''])[0] or 0
+print(f'Red: {red!r}')
+print(f'Green: {green!r}')
+print(f'Opacity: {opacity!r}')
+
+>>>
+Red: '5'
+Green: 0
+Opacity: 0
+```
+
+​		red这种情况正常返回，因为red值在my_values字典中，他的值就是在list列表中的一个字符串值。Python会把吧这种情况默认为True，所以red值就是or左侧的部分。
+
+​		green能够读取是因为green的值是list列表中的空字符串。空字符串，Python默认为False，green的值就是or右侧的0.
+
+​		opacity能够读取是因为：opacity不在my_values字典中，Python会默认返回第二个值['']（参见第16条）。默认值也是只有空字符串的列表，所以当opacity在字典中找不到时和green一样。
+
+​		然而，这个表达式很难读懂，而且它仍然没有完成我们的所有需求。如果还希望确保所有的参数都转换为整数，以便可以立即在数学表达式中使用，还需要将内置函数int写进去，才能将字符串解析为int：
+
+~~~python
+red = int(my_values.get('red', [''])[0] or 0)
+
+~~~
+
+​		这样更加难读，并且看起还更加别扭。这种代码很可怕，如果你是第一次阅读，就需要把整个表达式逐层拆开，才能明白表达啥意思，这很浪费时间。代码可以下的短一些
+
+并非都要写在一行：
+
+~~~Python
+red_str = my_values.get('red', [''])
+red = int(red_str[0]) if red_str[0] else 0
+~~~
+
+​		这样写更好。当逻辑不是太复杂，if/else条件表达式会让代码更清晰。但是在这个例子中，不如写一个完整的if/else表达式结构清晰。对比实现逻辑的几种展开表达式，刚才的那种浓缩式的写法就显得复杂：
+
+~~~python
+green_str = my_values.get('green', [''])
+if green_str[0]:
+	green = int(green_str[0])
+else:
+	green = 0
+~~~
+
+​		如果你需要重复的使用这种逻辑，可以写一个辅助函数：
+
+~~~python
+def get_first_int(values, key, default=0):
+	found = values.get(key, [''])
+	if found[0]:
+		return int(found[0])
+return default
+
+~~~
+
+​		这样的代码要比采用or的表达式或者if/else结构都更加清晰易懂。
+
+~~~python
+green = get_first_int(my_values, 'green')
+~~~
+
+​		一旦表达式变得复杂，就应该考虑将它们分割成更小的部分，并将逻辑转移到帮助函数中。这样所获得的可读性总是超过所获得的简洁性。避免复杂表达式的语法让你陷入像这样的混乱。遵循DRY原则:不要重复自己。
+
+**要点**
+
+* Python语法很容易把复杂的意思放在同一行表达，这样写很难懂
+* 复杂的表达式，尤其是要重复使用的复杂表达式，应该放到辅助函数中
+* 用if/else条件表达式，要比or、and写成的Boolean更好懂
+
