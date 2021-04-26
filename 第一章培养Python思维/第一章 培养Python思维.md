@@ -687,3 +687,125 @@ Today's soup is lentil, buy one get two kumamoto oysters, and our special entré
 ​		考虑到这些缺点和C风格格式表达式仍然存在第二和第四个问题，通常避免使用str.format。当然，我们还是必须掌握新的格式说明符所使用的这套迷你语言（mini language），我们可以在str的{}里面按照这套迷你语言的规则来指定冒号右侧的格式。系统内置的format函数也会使用这套规则。除此之外，str.format方法就只有历史意义了，他让我们可以在这套机制的基础之上学习Python新引入的f-string。
 
 **差值格式字符串**
+
+​		Python3.6添加了新的特性--插值格式字符串（interpolated format string，简写f-string），这一种新的语法将会解决上面出现的所有问题。这种语法要求在格式字符串前添加前缀字母f，和bytes类型的字符串前面的b，或者表示原始字符串（未经转义）的前缀r是一样的。
+
+​		f-string让格式字符串的表达能力发挥到了极致，他彻底解决了上面的第四个问题：键名导致程序冗余。我们不用像C风格那样专门定义dict，也不用再像调用str.format方法那样专门把值传给某个参数，这次可以直接在f-string的{}里面引用当前Python里所以的变量名，从而达到简化目的：
+
+~~~python
+key = 'my_var'
+value = 1.234
+formatted = f'{key} = {value}'
+print(formatted)
+>>>
+my_var = 1.234
+~~~
+
+​		str.format方法所支持的那套秘密语言，也就是在{}内的冒号右侧所采用的那套规则，现在也可以用到f-string中，而且可以向之前使用str.format那样，通过！符号把值转化为Unicode和repr形式的字符串：
+
+~~~python
+formatted = f'{key!r:<10} = {value:.2f}'
+print(formatted)
+>>>
+'my_var' = 1.23
+~~~
+
+​		采用f-string要比C风格的%操作以及str.format方法都更加简短。这里，从短到长的顺序把这种方法统一展示，并且将等号右侧对齐，以便更好的观察：
+
+```python
+key = 'my_var'
+value = 1.234
+f_string = f'{key:<10} = {value:.2f}'
+c_tuple = '%-10s = %.2f' % (key, value)
+str_args = '{:<10} = {:.2f}'.format(key, value)
+str_kw = '{key:<10} = {value:.2f}'.format(key=key,
+                                          value=value)
+c_dict = '%(key)-10s = %(value).2f' % {'key': key,
+                                       'value': value}
+
+print(f_string)
+print(c_tuple)
+print(str_args)
+print(str_kw)
+print(c_dict)
+
+>>>
+my_var     = 1.23
+my_var     = 1.23
+my_var     = 1.23
+my_var     = 1.23
+my_var     = 1.23
+```
+
+​		f -string还允许将完整的Python表达式放入占位符括号中，通过允许对使用简洁语法格式化的值进行小的修改，从上面解决第二个问题。用c风格的格式和str.format方法实现多行现在很容易就能在一行中实现：
+
+```python
+pantry = [
+    ('avocados', 1.25),
+    ('bananas', 2.5),
+    ('cherries', 15),
+]
+for i, (item, count) in enumerate(pantry):
+    old_style = '#%d: %-10s = %d' % (
+        i + 1,
+        item.title(),
+        round(count))
+    new_style = '#{}: {:<10s} = {}'.format(
+        i + 1,
+        item.title(),
+        round(count))
+    f_string = f'#{i + 1}: {item.title():<10s} = {round(count)}'
+    print(new_style)
+    print(new_style)
+    print(f_string)
+
+>>>
+#1: Avocados   = 1
+#1: Avocados   = 1
+#1: Avocados   = 1
+#2: Bananas    = 2
+#2: Bananas    = 2
+#2: Bananas    = 2
+#3: Cherries   = 15
+#3: Cherries   = 15
+#3: Cherries   = 15
+```
+
+​		你也可以向C语言相邻字符串（adiacent-string concatenation）拼接那样，把f-string写成多行，这样看起来会更加清晰。尽管，这样写要比单行更长，当仍然比其他多行的写法要好很多：
+
+```python
+pantry = [
+    ('avocados', 1.25),
+    ('bananas', 2.5),
+    ('cherries', 15),
+]
+for i, (item, count) in enumerate(pantry):
+    print(f'#{i + 1}: '
+          f'{item.title():<10s} = '
+          f'{round(count)}')
+ >>>
+#1: Avocados   = 1
+#2: Bananas    = 2
+#3: Cherries   = 15
+```
+
+​		Python表达式也可以出现在格式说明符选项中。例如通过使用变量而不是在格式字符串中硬编码来参数化要打印的数字数：
+
+```python
+places = 3
+number = 1.23456
+print(f'My number is {number:.{places}f}')
+
+>>>
+My number is 1.235
+```
+
+​		f-string所提供的表达性、简洁性和清晰性的结合，使其成为Python程序员的最佳内置选项。当需要将值格式化为字符串时，推荐使用f-strings。
+
+**要点**
+
+* 使用%操作符的c风格格式字符串会遇到各种陷阱和冗长的问题。
+* str.format方法在其格式化说明符迷你语言中引入了一些有用的概念，但是它重复了c风格格式字符串的错误，应该加以避免。
+* F-strings是一种用于将值格式化为字符串的新语法，它解决了c风格格式字符串的最大问题。
+* F-string简洁但功能强大，因为它们允许任意Python表达式直接嵌入到格式说明符中。
+
