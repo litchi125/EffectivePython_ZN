@@ -915,3 +915,152 @@ green = get_first_int(my_values, 'green')
 * 复杂的表达式，尤其是要重复使用的复杂表达式，应该放到辅助函数中
 * 用if/else条件表达式，要比or、and写成的Boolean更好懂
 
+## 第6条 把数据结构直接拆分到多个变量里,不要专门通过下标访问
+
+​		Python内置的元组类型可以创建不可变的序列，把许多元素依次保存起来。最简单的方法是只用元组保存两个值，例如字典里的键值对：
+
+```python
+snack_calories = {
+'chips': 140,
+'popcorn': 80,
+'nuts': 190,
+}
+items = tuple(snack_calories.items())
+print(items)
+
+>>>
+(('chips', 140), ('popcorn', 80), ('nuts', 190))
+```
+
+​		可以通过数字索引直接访问元组里的值：
+
+```python
+item = ('Peanut butter', 'Jelly')
+first = item[0]
+second = item[1]
+print(first, 'and', second)
+
+>>>
+Peanut butter and Jelly
+```
+
+​		一旦建立了元组，就不能够在通过索引去重新赋值：
+
+```python
+pair = ('Chocolate', 'Peanut butter')
+pair[0] = 'Honey'
+
+>>>
+    pair[0] = 'Honey'
+TypeError: 'tuple' object does not support item assignment
+```
+
+​		Python同样拥有解包的语法，通过这种语法只需要一个语句就可以把元组里面的元素赋值给多个变量。解包元组时，并非是要修改元组本身，并且元组本身是不可更改的，但是解包后赋值元素的变量是不一样的。例如，如果元组是确定的，就可以直接通过解包操作把元组的元素赋值给两个变量名，而不通过索引：
+
+~~~python
+item = ('Peanut butter', 'Jelly')
+first, second = item # Unpacking
+print(first, 'and', second)
+>>>
+Peanut butter and Jelly
+~~~
+
+​		通过解包操作来赋值要比通过下标去访问元组内的元素更加简洁，并通常仅需要几行代码。解包操作的左侧也可以是列表、序列、或任意深度的可迭代对象（iterable）。这里并不推荐按照下面这么写代码，但是知道它的原理是非常重要的：
+
+~~~python
+favorite_snacks = {
+'salty': ('pretzels', 100),
+'sweet': ('cookies', 180),
+'veggie': ('carrots', 20),
+}
+((type1, (name1, cals1)),
+(type2, (name2, cals2)),
+(type3, (name3, cals3))) = favorite_snacks.items()
+print(f'Favorite {type1} is {name1} with {cals1} calories')
+print(f'Favorite {type2} is {name2} with {cals2} calories')
+print(f'Favorite {type3} is {name3} with {cals3} calories')
+
+>>>
+Favorite salty is pretzels with 100 calories
+Favorite sweet is cookies with 180 calories
+Favorite veggie is carrots with 20 calories
+~~~
+
+​		对于Python小白来说，可能还不知道通过解包操作还可以交换两个变量的值，而不专门创建临时变量。这里使用典型的索引语法在列表中的两个位置之间交换值，这是升序排序算法的一部分：
+
+```python
+def bubble_sort(a):
+    for _ in range(len(a)):
+        for i in range(1, len(a)):
+            if a[i] < a[i-1]:
+                temp = a[i]
+                a[i] = a[i-1]
+                a[i-1] = temp
+names = ['pretzels', 'carrots', 'arugula', 'bacon']
+bubble_sort(names)
+print(names)
+
+>>>
+['arugula', 'bacon', 'carrots', 'pretzels']
+```
+
+​		然而，通过解包语法，就可以通过简单的一行实现交换：
+
+~~~python
+def bubble_sort(a):
+    for _ in range(len(a)):
+        for i in range(1, len(a)):
+            if a[i] < a[i-1]:
+                a[i-1],a[i] = a[i], a[i-1]
+
+names = ['pretzels', 'carrots', 'arugula', 'bacon']
+bubble_sort(names)
+print(names)
+
+>>>
+['arugula', 'bacon', 'carrots', 'pretzels']
+~~~
+
+​		这种交换变量的原理是：Python在处理赋值操作时，要先对等号右侧赋值，于是，它会创建一个临时的元组，把a[i] 与a[i-a]这两个元素放到临时的元组中。例如，第一次
+
+进入循环内部是，这两个元素分别是‘carrots’与‘pretzels’，于是，系统就创建临时元组（‘carrots’,‘pretzels’）。然后，Python会对这个临时元组进行解包操作，把临时元组里面的两个元素分别放到等号左边的两个地方，于是，‘carrots’就会把a[i-1]里面原有的‘pretzels’替换，‘pretzels‘也会把a[i]里面原有的’carrots‘替换条。现在，出现在a[0]的位置就是’carrots‘，出现在a[1位置的就是’pretzels‘。做完解包操作后，系统会挥手这个临时元组。
+
+​		解包操作还有一个重要的用法，可以用在for循环或者类似的结构中（例如推导与生成表达式，第27条），把复杂的数据拆分到相关的变量之中。下面这段代码没有采用解包操作，而是采用了传到的写法迭代snacks列表里面的元素。
+
+```python
+snacks = [('bacon', 350), ('donut', 240), ('muffin', 190)]
+for i in range(len(snacks)):
+    item = snacks[i]
+    name = item[0]
+    calories = item[1]
+	print(f'#{i+1}: {name} has {calories} calories')
+
+>>>
+#1: bacon has 350 calories
+#2: donut has 240 calories
+#3: muffin has 190 calories
+```
+
+​		这虽然能获取到正确结果，但是却很乱，因为snacks结构本身就是复杂列表，每一个元素都是一个元组，所以必须逐层访问才能查到具体的数据。下面换一种写法，首先调用内置的enumerate函数（参见第7条）获取当前要迭代的元组，然后针对这个元组进行解包，这样就可以直接获取到具体的name与calories值：
+
+~~~python
+for rank, (name, calories) in enumerate(snacks, 1):
+	print(f'#{rank}: {name} has {calories} calories')
+>>>
+#1: bacon has 350 calories
+#2: donut has 240 calories
+#3: muffin has 190 calories
+~~~
+
+​		这是Python风格的写法，不需要再通过下标逐层访问了。这种写法简短且容易理解。
+
+​		Python的解包操作可以用在多个方面，例如构建列表（第13条）、给函数设计参数列表（第22条）、传递关键字参数（第23条）、接收多个返回值（第19条）等。
+
+​		明智的使用解包操作，可以避免使用下标带来的麻烦，并且能让代码结果跟简单。
+
+**要点**
+
+* 解包操作是一种特殊的Python语法，只需要一行代码，就能把数据结构中的多个元素赋给多个值
+* 解包操作在Python中运用广泛，凡是可迭代的对象都可以拆分，无论里面还有多少层迭代结构
+* 尽量通过解包操作而不是下标访问数据，这能时代更简洁、明了
+
