@@ -24,10 +24,12 @@ Python 3.8.0
 
 ​		你还可以通过检查sys内置模块中的值来确定你在运行时使用的Python版本
 
->>> print(sys.version_info)
->>> sys.version_info(major=3, minor=8, micro=1, releaselevel='final', serial=0)
->>> print(sys.version)
->>> 3.8.1 (tags/v3.8.1:1b293b6, Dec 18 2019, 23:11:46) [MSC v.1916 64 bit (AMD64)]
+~~~python
+print(sys.version_info)
+sys.version_info(major=3, minor=8, micro=1, releaselevel='final', serial=0)
+print(sys.version)
+3.8.1 (tags/v3.8.1:1b293b6, Dec 18 2019, 23:11:46) [MSC v.1916 64 bit (AMD64)]
+~~~
 
 ​		Python 3由Python核心开发人员和社区积极维护，并不断得到改进。本书中介绍Python3的各种强大的新特性。大多数最常见的Python开源库都与Python 3兼容，并专注于Python 3。我强烈建议您在所有Python项目中使用ython 3。
 
@@ -92,7 +94,7 @@ Python 3.8.0
 
 *提示*
 
-​		Pylint（https://www.pylint.org）是一款流行的Python源码静态分析工具。他可以自动检查手册是的代码是否符合PEP 8风格指南，而且还能找出很多常见错误。很多IDE与编译器，也都办好这样的linting工具或者支持类似的插件。
+​		[Pylint](https://www.pylint.org)是一款流行的Python源码静态分析工具。他可以自动检查手册是的代码是否符合PEP 8风格指南，而且还能找出很多常见错误。很多IDE与编译器，也都办好这样的linting工具或者支持类似的插件。
 
 *要点*
 
@@ -104,19 +106,25 @@ Python 3.8.0
 
 ​		在Python中有两种类型表示字符序列：bytes、str。bytes实例包含的是原始数据，即8位的无符号值（通常按照ASCII编码规范显示）
 
->>> a = b'h\x65llo'
->>> print(list(a))
->>> [104, 101, 108, 108, 111]
->>> print(a)
->>> b'hello'
+~~~python
+a = b'h\x65llo'
+print(list(a))
+[104, 101, 108, 108, 111]
+print(a)
+b'hello'
+~~~
 
 ​		str实例包含的是Unicode码点（code point，也叫代码点），这些码点与人类语言中的文字字符对应。
 
->>> a = 'a\u0300 propos'
->>> print(list(a))
->>> ['a', '̀', ' ', 'p', 'r', 'o', 'p', 'o', 's']
->>> print(a)
->>> à propos
+~~~python
+a = 'a\u0300 propos'
+print(list(a))
+['a', '̀', ' ', 'p', 'r', 'o', 'p', 'o', 's']
+print(a)
+à propos
+~~~
+
+
 
 ​		需要注意的是，str实例并不一定非要用固定的方案编码成二进制数据，bytes实例也不一定非要按照某种固定的方案解码成字符串。要不Unicode数据转换成二进制数据，必须调用str的encode方法。要把二进制数据转换成Unicode数据，必须调用byres的decode方法。调用这些方法的时候，可以明确自己要使用的编码方案，也可以采用系统默认的方案，通常为UTF-8(有时候也不一定，下面会讲)。
 
