@@ -12,15 +12,17 @@
 
 ​		很多电脑都会搭建包含多个版本的标准CPython运行环境。这就导致，在命令行中运行Python时，默认运行的Python版本并不清除，它有可能启动的是Python2.7，有时也会默认启动一些旧Python版本，例如Python2.6或Python2.5. 你可以使用--version参数，准确的找到所使用的版本号。
 
+~~~shell
 $ python --version
-
 Python 2.7.10
+~~~
 
 ​		Python3可以直接用Python3启动：
 
+~~~shell
 $ python3 --version
-
 Python 3.8.0
+~~~
 
 ​		你还可以通过检查sys内置模块中的值来确定你在运行时使用的Python版本
 
