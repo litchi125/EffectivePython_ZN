@@ -1165,3 +1165,110 @@ for i, flavor in enumerate(flavor_list,1):
 * 直接用enumerate方法而非通过range方法指定下标的取值范围，再用下标去访问序列
 * 可以通过enumerate的第二个参数指定起始序号(默认为0)
 
+## 第8条 使用zip方法同时遍历两个迭代器
+
+​		在写Python代码时，经常会根据某份列表中的对象创建出许多相关的新列表。通过使用列表推导式，可以把表达式运用到源列表的每个元素，从而派生出一份派生列表(见第27条)：
+
+~~~python
+names = ['Cecilia', 'Lise', 'Marie']
+counts = [len(n) for n in names]
+print(counts)
+>>>
+[7, 4, 5]
+~~~
+
+​		派生列表中的元素与源列表中对应位置上的元素有着一定的关系。如果相同时遍历这两份列表，那可以根据源列表的长度做迭代：
+
+```python
+longest_name = None
+max_count = 0
+names = ['Cecilia', 'Lise', 'Marie']
+counts = [len(n) for n in names]
+for i in range(len(names)):
+    count = counts[i]
+    if count > max_count:
+        longest_name = names[i]
+        max_count = count
+print(longest_name)
+
+>>>
+Cecilia
+```
+
+​		这样写的问题在于，整个循环语句看起来很乱。names和counts变量的索引让代码很难读。可以使用enumerate(见第7条)可以改善这个问题，但是治标不治本
+
+```python
+longest_name = None
+max_count = 0
+names = ['Cecilia', 'Lise', 'Marie']
+counts = [len(n) for n in names]
+for i, name in enumerate(names):
+    count = counts[i]
+    if count > max_count:
+        longest_name = name
+        max_count = count
+print(longest_name)
+>>>
+Cecilia
+```
+
+​		为了让代码更清晰，Python提供了zip内置方法。zip方法能够将两个或更多的iterator封装成惰性生成器(lazy generator)。每次迭代时，它会分别从这些迭代器里获取各自的下一个元素，并把这些值放在一个元组里。而这个元组可以通过for循环解包到不同变量中(见第6条)。这样写代码，比通过下标遍历列表更清晰：
+
+```python
+longest_name = None
+max_count = 0
+names = ['Cecilia', 'Lise', 'Marie']
+counts = [len(n) for n in names]
+for name, count in zip(names, counts):
+    if count > max_count:
+        longest_name = name
+        max_count = count
+print(longest_name)
+
+>>>
+Cecilia
+```
+
+​		zip每次只从它封装的迭代器中取一个元素，所以即便源列表很长，程序也不会因为占内存多而崩溃。
+
+​		但是，当输入迭代器的长度不同时，要注意zip的操作了。例如，当我在names列表中新增了一个元素而忘记更行counts列表了。在通过zip去遍历两个列表时，输出结果就会异常：
+
+```python
+for name,count in zip(names,counts):
+    print(name)
+    
+>>>
+Cecilia
+Lise
+Marie
+```
+
+​		新元素‘Rosalind’并没有打印出来。为什么呢？这就要了解zip方法的原理了。zip方法
+
+会持续迭代生成元组，直到任何一个迭代器处理完毕，就不在继续往下运行了。它的输出长度和最短的输入长度相同。当已知的迭代器的长度相同时，它可以很好的运行。
+
+​		但是，很多情况下，列表的长度并不相同，zip方法提前终止会导致结果与预期不符。如果无法确定这些列表的长度是否相同，那就不要把他们传个zip方法，而是采用itertools模块中的zip_longest方法：
+
+```python
+import itertools
+names = ['Cecilia', 'Lise', 'Marie']
+counts = [len(n) for n in names]
+names.append('Rosalind:')
+for name, count in itertools.zip_longest(names, counts):
+    print(f'{name}: {count}')
+
+>>>
+Cecilia: 7
+Lise: 4
+Marie: 5
+Rosalind:: None
+```
+
+​		如果列表已经遍历完了，zip_longest会用当初传给fillvalue参数的那个值补空缺(本例中空缺的字符串‘Rosalind’的长度值)，默认是Node。
+
+**要点**
+
+* 内置的zip函数可以同时遍历多个迭代器
+* zip会创建惰性生成器，让它每次只生成一个元组，所以无论输入的数据有多长，他都是一个一个处理
+* 如果提供的迭代器长度不一致，但任意一个迭代完毕，zip停止运行
+* 如果想按照最长的迭代器遍历，那就使用内置itertools模块的zip_longest方法
