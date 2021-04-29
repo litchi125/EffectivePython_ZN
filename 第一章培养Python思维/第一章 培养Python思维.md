@@ -1,14 +1,14 @@
 # 第一章 培养Python思维
 
-​		编程语言的用法习惯是由用户定义的。这么多年来，Python社区使用Pythonic来形容Python这种独特的风格。这种风格并非受编译器的约束或强制形成的，而是在大家使用Python语言及合作的过程中积累下丰富经验，逐渐形成的。Python开发者并不喜欢复杂的代码，他们更喜欢选择简单、高可读，而非复杂的代码。（在你的解析器中输入import this，就可以查看The Zen of Python。）
+​		编程语言的用法习惯是由用户定义的。这么多年来，Python社区使用Pythonic来形容Python这种独特的风格。这种风格并非受编译器的约束或强制形成的，而是在大家使用Python语言及合作的过程中积累下丰富经验，逐渐形成的。Python开发者并不喜欢复杂的代码，他们更喜欢选择简单、高可读，而非复杂的代码。(在你的解析器中输入import this，就可以查看The Zen of Python。)
 
-​		熟悉其他编程语言的程序员可能会尝试按照c++、Java或者他们熟悉的任何语言的编码风格去书写Python代码。对于Python小白来说，可能就需要花些时间去熟悉Python所能表达的众多概念。因此，了解Python中最常用的方法（即Python方法）是很重要的，这些模式将影响你编写的每一个程序。
+​		熟悉其他编程语言的程序员可能会尝试按照c++、Java或者他们熟悉的任何语言的编码风格去书写Python代码。对于Python小白来说，可能就需要花些时间去熟悉Python所能表达的众多概念。因此，了解Python中最常用的方法(即Python方法)是很重要的，这些模式将影响你编写的每一个程序。
 
 ## 第1条 了解你所使用的Python版本
 
 
 
-​		本书的巨大多数代码都将遵循Python3.7（发布于2018年6月）。此外，本书也会给出一些按照Python3.8（发布于2019年10月）语言规范编写的实例，用以突出展示即将广泛使用的Python3.8新特性。本书将不再包含Python2.
+​		本书的巨大多数代码都将遵循Python3.7(发布于2018年6月)。此外，本书也会给出一些按照Python3.8(发布于2019年10月)语言规范编写的实例，用以突出展示即将广泛使用的Python3.8新特性。本书将不再包含Python2.
 
 ​		很多电脑都会搭建包含多个版本的标准CPython运行环境。这就导致，在命令行中运行Python时，默认运行的Python版本并不清除，它有可能启动的是Python2.7，有时也会默认启动一些旧Python版本，例如Python2.6或Python2.5. 你可以使用--version参数，准确的找到所使用的版本号。
 
@@ -35,7 +35,7 @@ print(sys.version)
 
 ​		Python 3由Python核心开发人员和社区积极维护，并不断得到改进。本书中介绍Python3的各种强大的新特性。大多数最常见的Python开源库都与Python 3兼容，并专注于Python 3。我强烈建议您在所有Python项目中使用ython 3。
 
-​		Python2将于2020年1月1日停止维护，所有的bug修复、安全补丁，以及特性特性都会停止维护。在此之后，再使用Python2进行编码将会是一件痛苦的事，因为官方已经不再维护。深度依赖Python2代码库的开发者可以考虑使用2to3（Python预装工具）和six（社区报，参将项目82）工具进行迁移。
+​		Python2将于2020年1月1日停止维护，所有的bug修复、安全补丁，以及特性特性都会停止维护。在此之后，再使用Python2进行编码将会是一件痛苦的事，因为官方已经不再维护。深度依赖Python2代码库的开发者可以考虑使用2to3(Python预装工具)和six(社区报，参将项目82)工具进行迁移。
 
 **要点**
 
@@ -53,7 +53,7 @@ print(sys.version)
 
 ​		在Python中，空格在语法上是有意义的。Python程序员对空格对代码清晰度的影响特别敏感。遵循以下与空格相关的指导原则:
 
-* 使用空格（space）表示缩进，而不是制表符（tab）
+* 使用空格(space)表示缩进，而不是制表符(tab)
 * 和语法相关的每一层缩进都要用4个空格表示
 * 每行最多不超多79个字符
 * 针对较长的表达式，当延伸到其他行时，应在正常缩进的基础上缩进额外的4个空格
@@ -67,10 +67,10 @@ print(sys.version)
 
 ​		PEP 8建议对代码中的不同部分采用独特的命名风格。这些约定使得在阅读代码是很容易区分哪个类型对应哪个名称。遵循下面的指导规则：
 
-* 函数、变量及属性采用小写字母来拼写，各单词之间采用下划线连接，例如：lowercase_underscore
+* 方法、变量及属性采用小写字母来拼写，各单词之间采用下划线连接，例如：lowercase_underscore
 * 受保护的实例属性，采用一个下划线开头，例如：_leading_underscore
 * 私有实例属性，采用两个下划线开头，例如：__double_leading_underscore
-* 类（包括异常）命名时，每个单词的首字母大写，例如：CapitalizedWord
+* 类(包括异常)命名时，每个单词的首字母大写，例如：CapitalizedWord
 * 模块级别的常量，所有字母大写，各单词之间用下换线连接，例如：all_caps
 * 类中的实例方法，应该把第一个参数命名为self，用来表示对象本身
 * 类方法的第一个参数，应该命名为cls，用来表示类本身
@@ -89,7 +89,7 @@ print(sys.version)
 
 ​		PEP 8对于怎么在代码中引入模块，给出下面的建议
 
-* 把import 语句（包含from x import y）放嘴文件开头
+* 把import 语句(包含from x import y)放嘴文件开头
 * 引入模块是，应该使用绝对名称，而不应该根据相对路径引入。例如，引入bar包中的foo模块，应该完整地写出from bar import foo，即便当前路径为bar包中，也不应该简写成import foo
 * 如果一定要用相对名称来编写impot语句，应该明确的写出from . import foo
 * 文件中的import语句应该按顺序分成三部分：首先引入标准库中的模块，然后引入第三方模块，最后引入自定义模块。每一种都要按照字母表顺序引入。
@@ -106,7 +106,7 @@ print(sys.version)
 
 ## 第3条 了解bytes与str的区别
 
-​		在Python中有两种类型表示字符序列：bytes、str。bytes实例包含的是原始数据，即8位的无符号值（通常按照ASCII编码规范显示）
+​		在Python中有两种类型表示字符序列：bytes、str。bytes实例包含的是原始数据，即8位的无符号值(通常按照ASCII编码规范显示)
 
 ~~~python
 a = b'h\x65llo'
@@ -116,7 +116,7 @@ print(a)
 b'hello'
 ~~~
 
-​		str实例包含的是Unicode码点（code point，也叫代码点），这些码点与人类语言中的文字字符对应。
+​		str实例包含的是Unicode码点(code point，也叫代码点)，这些码点与人类语言中的文字字符对应。
 
 ~~~python
 a = 'a\u0300 propos'
@@ -132,12 +132,12 @@ à propos
 
 ​		由于两种字符类型的不同，在Python代码中一般分为两种情况：
 
-* 开发者需要操作包含UTF-8编码（或其他编码）的8 bit的原始序列
+* 开发者需要操作包含UTF-8编码(或其他编码)的8 bit的原始序列
 * 开发者需要操作不含特殊编码的Unicode字符串
 
-​		开发者通常需要两个辅助函数来完成不同情况下的转换，并确保输入值的类型与预期类型相符。
+​		开发者通常需要两个辅助方法来完成不同情况下的转换，并确保输入值的类型与预期类型相符。
 
-​		第一个辅助函数接受一个bytes 或 str 类型的实例，并返回一个str类型值“
+​		第一个辅助方法接受一个bytes 或 str 类型的实例，并返回一个str类型值“
 
 ```python
 def to_str(bytes_or_str):
@@ -157,7 +157,7 @@ if __name__ == '__main__':
 'bar'
 ```
 
-​		第二个辅助函数接受一个bytes 或 str实例，并返回一个bytes类型值：
+​		第二个辅助方法接受一个bytes 或 str实例，并返回一个bytes类型值：
 
 ```python
 def to_bytes(bytes_or_str):
@@ -236,7 +236,7 @@ assert b'red' > 'blue'
 TypeError: '>' not supported between instances of 'bytes' and 'str'
 ```
 
-​		比较两个字符串完全相同（他们的ASCII编码均表示“foo”），但分别属于bytes类型和str类型的实例时，通常会返回False：
+​		比较两个字符串完全相同(他们的ASCII编码均表示“foo”)，但分别属于bytes类型和str类型的实例时，通常会返回False：
 
 ```python
 print(b'foo' == 'foo')
@@ -245,7 +245,7 @@ print(b'foo' == 'foo')
 False
 ```
 
-​		两种类型的实例都可以出现在%操作符的右侧，用来替换左侧那个格式化字符串（format string）里面的%s：
+​		两种类型的实例都可以出现在%操作符的右侧，用来替换左侧那个格式化字符串(format string)里面的%s：
 
 ```python
 print(b'red %s' % b'blue')
@@ -274,11 +274,11 @@ print('red %s' % b'blue')
 red b'blue'
 ```
 
-​		这样写的代码，会让操作系统在bytes实例上面调用__ repr__方法（参见项目75），然后用这次调用所得到的结果替换格式字符串里面的%s，因此程序会输出b'blue'，而不是预期输出的blue。
+​		这样写的代码，会让操作系统在bytes实例上面调用__ repr__方法(参见项目75)，然后用这次调用所得到的结果替换格式字符串里面的%s，因此程序会输出b'blue'，而不是预期输出的blue。
 
 ​		
 
-​		第二个问题发生在操作文件句柄的时候，这里的句柄指的是内置的open函数放回的句柄。这样的句柄默认需要使用Unicode字符串操作，而不能采用原始的bytes。在Python2 中，通常会因此导致出错。例如，将二进制数据写入文件时，这个看似简单的代码就会出错：
+​		第二个问题发生在操作文件句柄的时候，这里的句柄指的是内置的open方法放回的句柄。这样的句柄默认需要使用Unicode字符串操作，而不能采用原始的bytes。在Python2 中，通常会因此导致出错。例如，将二进制数据写入文件时，这个看似简单的代码就会出错：
 
 ```python
 with open('data.bin', 'w') as f:
@@ -288,7 +288,7 @@ with open('data.bin', 'w') as f:
 TypeError: write() argument must be str, not bytes
 ```
 
-​		这个异常出现的原因是在调用open函数打开文件时采用了要求以文本形式写入的“w”模式，应当采用“wb”模式。当文件以文本模式打开时，write方法接受的包含Unicode数据的str实例，不是包含二进制数据的bytes实例。所以，我们在调用open函数将模式改为“wb”：
+​		这个异常出现的原因是在调用open方法打开文件时采用了要求以文本形式写入的“w”模式，应当采用“wb”模式。当文件以文本模式打开时，write方法接受的包含Unicode数据的str实例，不是包含二进制数据的bytes实例。所以，我们在调用open方法将模式改为“wb”：
 
 ```python
 with open('data.bin', 'wb') as f:
@@ -305,7 +305,7 @@ data = f.read()
 UnicodeDecodeError: 'gbk' codec can't decode byte 0xf5 in position 4: incomplete multibyte sequence
 ~~~
 
-​		导致读操作失败的原因是，才用了操作文本数据的“r”模式，应当采用操作二进制数据的“rb”模式。当以文本模式操作句柄时，系统会采用默认的文本编码方式处理二进制数据。所以，上面的写话会让系统通过bytes.decode把数据解码成str字符串，再用str.encode把字符串编码成二进制值。然而对于大多数系统来说，默认的编码方案是UTF-8（这里调成了’gbk‘），所以系统可能会把b'\xf1\xf2\xf3\xf4\xf5'当做UTF-8（这里是“gbk”）格式字符串去解码，于是就出现上述异常。为了修复这个异常，需要把模式改为“rb”：
+​		导致读操作失败的原因是，才用了操作文本数据的“r”模式，应当采用操作二进制数据的“rb”模式。当以文本模式操作句柄时，系统会采用默认的文本编码方式处理二进制数据。所以，上面的写话会让系统通过bytes.decode把数据解码成str字符串，再用str.encode把字符串编码成二进制值。然而对于大多数系统来说，默认的编码方案是UTF-8(这里调成了’gbk‘)，所以系统可能会把b'\xf1\xf2\xf3\xf4\xf5'当做UTF-8(这里是“gbk”)格式字符串去解码，于是就出现上述异常。为了修复这个异常，需要把模式改为“rb”：
 
 ```python
 with open('data.bin', 'rb') as f:
@@ -313,7 +313,7 @@ with open('data.bin', 'rb') as f:
 assert data == b'\xf1\xf2\xf3\xf4\xf5'
 ```
 
-​		此外，也可以也可以在调用open方法时，通过encoding参数来指定编码格式，以确保平台特有的行为不会干扰代码运行的结果。例如，假设刚才写的二进制数据表示的是一个采用’cp1252‘标准（一种老式的Windows编码）进行字符串编码，可以这么写：
+​		此外，也可以也可以在调用open方法时，通过encoding参数来指定编码格式，以确保平台特有的行为不会干扰代码运行的结果。例如，假设刚才写的二进制数据表示的是一个采用’cp1252‘标准(一种老式的Windows编码)进行字符串编码，可以这么写：
 
 ```python
 with open('data.bin', 'r', encoding='cp1252') as f:
@@ -321,25 +321,25 @@ with open('data.bin', 'r', encoding='cp1252') as f:
 assert data == 'ñòóôõ'
 ```
 
-​		这样操作，异常虽然消失了，但是返回的字符串与读取原始字节数据非常不同。这个例子，告诉我们，要时刻注意当前操作系统默认的编码标准（可以通过命令查看： python3 -c 'import locale; print(locale.getpreferredencoding())'），看是否与期望的相同。当不太确定的时候，在调用open函数是通过encoding参数指定编码方式。
+​		这样操作，异常虽然消失了，但是返回的字符串与读取原始字节数据非常不同。这个例子，告诉我们，要时刻注意当前操作系统默认的编码标准(可以通过命令查看： python3 -c 'import locale; print(locale.getpreferredencoding())')，看是否与期望的相同。当不太确定的时候，在调用open方法是通过encoding参数指定编码方式。
 
 
 
 **要点**
 
 * bytes包含的是b bit值所组成的序列，str包含的是Unicode码点组成的序列
-* 使用辅助函数来确保操作过程中输入时所期盼的字符串类型 ，是8 bit的序列、UTF-8编码的字符串、Unicode码点还是其他
+* 使用辅助方法来确保操作过程中输入时所期盼的字符串类型 ，是8 bit的序列、UTF-8编码的字符串、Unicode码点还是其他
 * bytes实例和str实例之间不能混用诸如>、==、+、%等操作
 * 如果想要读取或者写入二进制数据时，应该采用’rb‘ 或者 ’wb'模式
 * 如果读取或写入Unicode数据时，应当注意操作系统默认的编码方式。可以通过在调用open方法时，指定encoding参数，来避免出错。
 
 ## 第4条 用支持插值的f-string取代C风格的格式字符串与str.format方法
 
-​		字符串在Python代码中普遍存在。在用户界面和命令行实用程序中呈现消息时要用，把数据写入文件或socket时要用，在Exception里异常详情时要用（见项目27），在进行调试时（参见项目80和项目75）同样要用。
+​		字符串在Python代码中普遍存在。在用户界面和命令行实用程序中呈现消息时要用，把数据写入文件或socket时要用，在Exception里异常详情时要用(见项目27)，在进行调试时(参见项目80和项目75)同样要用。
 
 ​		格式化是将预定义的文本和数据值组合成人类可读的消息，并将该消息存储为字符串的过程。Python对字符串格式化处理有四种方法，这些方法都内置带语言和标准库中。这四种方法中，除了一种外，其他三个都存在严重缺项使我们应当理解和避免的，这里将在最后将另一种方法。
 
-​		Python中字符串格式化通常采用的方法是使用%。这个操作符左侧的文本模板叫做格式字符串（format string），我们可以在操作符右边写上某个值或由多个值所构成的元组（tuple），来替换格式字符串中的相关符号。例如，下面这段代码通过%操作符把难以阅读的二进制和十六进制数值，显示成十进制形式：
+​		Python中字符串格式化通常采用的方法是使用%。这个操作符左侧的文本模板叫做格式字符串(format string)，我们可以在操作符右边写上某个值或由多个值所构成的元组(tuple)，来替换格式字符串中的相关符号。例如，下面这段代码通过%操作符把难以阅读的二进制和十六进制数值，显示成十进制形式：
 
 ~~~python
 a = 0b10111011
@@ -350,7 +350,7 @@ print('Binary is %d, hex is %d' % (a, b))
 Binary is 187, hex is 3167
 ~~~
 
-​		格式字符串中像%d这样的占位符会被右侧的数据替换。这样的格式化语法来自C语言的printf函数，Python语言以及其他编程语言都沿用了类似的方式。所以Python支持printf中%s、%x、%f等占位符，同时也支持控制小数点的位置、并支持填充和对其方式。对于许多Python小白来书都喜欢C风格的字符串格式化，因为他们比较熟悉这种方式并且这种方式比较简单。
+​		格式字符串中像%d这样的占位符会被右侧的数据替换。这样的格式化语法来自C语言的printf方法，Python语言以及其他编程语言都沿用了类似的方式。所以Python支持printf中%s、%x、%f等占位符，同时也支持控制小数点的位置、并支持填充和对其方式。对于许多Python小白来书都喜欢C风格的字符串格式化，因为他们比较熟悉这种方式并且这种方式比较简单。
 
 ​		在Python中采用C风格字符串格式化会有四个问题。
 
@@ -548,9 +548,9 @@ Today's soup is lentil, buy one get two kumamoto oysters, and our special entré
 
 ​		一定会有更好的办法才对！
 
-**内置的format函数与str类的format方法**
+**内置的format方法与str类的format方法**
 
-​		Python3中添加了高级字符串格式化（advanced string formatting）机制，它的表达能力比C风格采用的%操作要强。针对单个Python值，通过内置的format函数可以很好的实现所需。例如，通过逗号表示千位分隔符，^表示居中对齐：
+​		Python3中添加了高级字符串格式化(advanced string formatting)机制，它的表达能力比C风格采用的%操作要强。针对单个Python值，通过内置的format方法可以很好的实现所需。例如，通过逗号表示千位分隔符，^表示居中对齐：
 
 ```python
 a = 1234.5678
@@ -588,7 +588,7 @@ print(formatted)
 my_var = 1.23
 ~~~
 
-​		可以这样理解这种格式化的方法：系统把str.format方法接受到的每个值传递给内置的format函数，并找到这个值在字符串中对应的{}，同时将{}里面写的格式也传递给format函数，例如系统处理value时，传的就是format(value,'.2f')。然后，系统会把format函数所返回的结果卸载真个格式化字符串{}所在的位置。另外。每个类都可以通过__ format__这个内置方法制定相应的逻辑，这样的话format函数在把类实例转换成字符串时，就会按照这个逻辑转换。
+​		可以这样理解这种格式化的方法：系统把str.format方法接受到的每个值传递给内置的format方法，并找到这个值在字符串中对应的{}，同时将{}里面写的格式也传递给format方法，例如系统处理value时，传的就是format(value,'.2f')。然后，系统会把format方法所返回的结果卸载真个格式化字符串{}所在的位置。另外。每个类都可以通过__ format__这个内置方法制定相应的逻辑，这样的话format方法在把类实例转换成字符串时，就会按照这个逻辑转换。
 
 ​		C风格格式化采用%来应道格式说明符，所以如果这个符号按照原样输出，就必须转义，也就是连写两个%%。同理，在调用str.format的时候，如果想把str中{、}输出，也需要转义：
 
@@ -694,11 +694,11 @@ Today's soup is lentil, buy one get two kumamoto oysters, and our special entré
 
 ​		这种风格稍微不那么混乱，因为它消除了字典中的一些引号和格式说明符中的一些字符，但它几乎没有什么吸引力。此外，在占位符中使用字典键和索引的高级特性只提供了Python的一小部分表达功能。这种表达性的缺乏是如此有限，以至于从整体上削弱了str格式方法的价值。
 
-​		考虑到这些缺点和C风格格式表达式仍然存在第二和第四个问题，通常避免使用str.format。当然，我们还是必须掌握新的格式说明符所使用的这套迷你语言（mini language），我们可以在str的{}里面按照这套迷你语言的规则来指定冒号右侧的格式。系统内置的format函数也会使用这套规则。除此之外，str.format方法就只有历史意义了，他让我们可以在这套机制的基础之上学习Python新引入的f-string。
+​		考虑到这些缺点和C风格格式表达式仍然存在第二和第四个问题，通常避免使用str.format。当然，我们还是必须掌握新的格式说明符所使用的这套迷你语言(mini language)，我们可以在str的{}里面按照这套迷你语言的规则来指定冒号右侧的格式。系统内置的format方法也会使用这套规则。除此之外，str.format方法就只有历史意义了，他让我们可以在这套机制的基础之上学习Python新引入的f-string。
 
 **差值格式字符串**
 
-​		Python3.6添加了新的特性--插值格式字符串（interpolated format string，简写f-string），这一种新的语法将会解决上面出现的所有问题。这种语法要求在格式字符串前添加前缀字母f，和bytes类型的字符串前面的b，或者表示原始字符串（未经转义）的前缀r是一样的。
+​		Python3.6添加了新的特性--插值格式字符串(interpolated format string，简写f-string)，这一种新的语法将会解决上面出现的所有问题。这种语法要求在格式字符串前添加前缀字母f，和bytes类型的字符串前面的b，或者表示原始字符串(未经转义)的前缀r是一样的。
 
 ​		f-string让格式字符串的表达能力发挥到了极致，他彻底解决了上面的第四个问题：键名导致程序冗余。我们不用像C风格那样专门定义dict，也不用再像调用str.format方法那样专门把值传给某个参数，这次可以直接在f-string的{}里面引用当前Python里所以的变量名，从而达到简化目的：
 
@@ -781,7 +781,7 @@ for i, (item, count) in enumerate(pantry):
 #3: Cherries   = 15
 ```
 
-​		你也可以向C语言相邻字符串（adiacent-string concatenation）拼接那样，把f-string写成多行，这样看起来会更加清晰。尽管，这样写要比单行更长，当仍然比其他多行的写法要好很多：
+​		你也可以向C语言相邻字符串(adiacent-string concatenation)拼接那样，把f-string写成多行，这样看起来会更加清晰。尽管，这样写要比单行更长，当仍然比其他多行的写法要好很多：
 
 ```python
 pantry = [
@@ -819,7 +819,7 @@ My number is 1.235
 * F-strings是一种用于将值格式化为字符串的新语法，它解决了c风格格式字符串的最大问题。
 * F-string简洁但功能强大，因为它们允许任意Python表达式直接嵌入到格式说明符中。
 
-## 第5条  用辅助函数代替复杂的表达式
+## 第5条  用辅助方法代替复杂的表达式
 
 ​		Python简洁的语法使得编写实现大量逻辑的单行表达式变得很容易。例如，假设我想解码来自URL的查询字符串。这里，每个查询字符串参数表示一个整数值：
 
@@ -850,7 +850,7 @@ Green:  ['']
 Opacity:  None
 ```
 
-​		当参数不存在或者为空时，可以给定默认值0。对于这样的情况，采用Boolean表达式是更好的选择，不值得写完成的if语句或者辅助函数。
+​		当参数不存在或者为空时，可以给定默认值0。对于这样的情况，采用Boolean表达式是更好的选择，不值得写完成的if语句或者辅助方法。
 
 ​		Python的Boolean表达式这种语法写起来更简单，Python会把空字符串、空列表以及0都当做False。因此，只需要把get方法吵到的结果放在or操作符的左边，并在右边写上0就可以了。这样的话，只要左面的表达式为False，name整个表达式的值就自然被评估为右边那个表达式的值，也就是0.
 
@@ -872,9 +872,9 @@ Opacity: 0
 
 ​		green能够读取是因为green的值是list列表中的空字符串。空字符串，Python默认为False，green的值就是or右侧的0.
 
-​		opacity能够读取是因为：opacity不在my_values字典中，Python会默认返回第二个值['']（参见第16条）。默认值也是只有空字符串的列表，所以当opacity在字典中找不到时和green一样。
+​		opacity能够读取是因为：opacity不在my_values字典中，Python会默认返回第二个值[''](参见第16条)。默认值也是只有空字符串的列表，所以当opacity在字典中找不到时和green一样。
 
-​		然而，这个表达式很难读懂，而且它仍然没有完成我们的所有需求。如果还希望确保所有的参数都转换为整数，以便可以立即在数学表达式中使用，还需要将内置函数int写进去，才能将字符串解析为int：
+​		然而，这个表达式很难读懂，而且它仍然没有完成我们的所有需求。如果还希望确保所有的参数都转换为整数，以便可以立即在数学表达式中使用，还需要将内置方法int写进去，才能将字符串解析为int：
 
 ~~~python
 red = int(my_values.get('red', [''])[0] or 0)
@@ -900,7 +900,7 @@ else:
 	green = 0
 ~~~
 
-​		如果你需要重复的使用这种逻辑，可以写一个辅助函数：
+​		如果你需要重复的使用这种逻辑，可以写一个辅助方法：
 
 ~~~python
 def get_first_int(values, key, default=0):
@@ -917,12 +917,12 @@ return default
 green = get_first_int(my_values, 'green')
 ~~~
 
-​		一旦表达式变得复杂，就应该考虑将它们分割成更小的部分，并将逻辑转移到帮助函数中。这样所获得的可读性总是超过所获得的简洁性。避免复杂表达式的语法让你陷入像这样的混乱。遵循DRY原则:不要重复自己。
+​		一旦表达式变得复杂，就应该考虑将它们分割成更小的部分，并将逻辑转移到帮助方法中。这样所获得的可读性总是超过所获得的简洁性。避免复杂表达式的语法让你陷入像这样的混乱。遵循DRY原则:不要重复自己。
 
 **要点**
 
 * Python语法很容易把复杂的意思放在同一行表达，这样写很难懂
-* 复杂的表达式，尤其是要重复使用的复杂表达式，应该放到辅助函数中
+* 复杂的表达式，尤其是要重复使用的复杂表达式，应该放到辅助方法中
 * 用if/else条件表达式，要比or、and写成的Boolean更好懂
 
 ## 第6条 把数据结构直接拆分到多个变量里,不要专门通过下标访问
@@ -975,7 +975,7 @@ print(first, 'and', second)
 Peanut butter and Jelly
 ~~~
 
-​		通过解包操作来赋值要比通过下标去访问元组内的元素更加简洁，并通常仅需要几行代码。解包操作的左侧也可以是列表、序列、或任意深度的可迭代对象（iterable）。这里并不推荐按照下面这么写代码，但是知道它的原理是非常重要的：
+​		通过解包操作来赋值要比通过下标去访问元组内的元素更加简洁，并通常仅需要几行代码。解包操作的左侧也可以是列表、序列、或任意深度的可迭代对象(iterable)。这里并不推荐按照下面这么写代码，但是知道它的原理是非常重要的：
 
 ~~~python
 favorite_snacks = {
@@ -1033,9 +1033,9 @@ print(names)
 
 ​		这种交换变量的原理是：Python在处理赋值操作时，要先对等号右侧赋值，于是，它会创建一个临时的元组，把a[i] 与a[i-a]这两个元素放到临时的元组中。例如，第一次
 
-进入循环内部是，这两个元素分别是‘carrots’与‘pretzels’，于是，系统就创建临时元组（‘carrots’,‘pretzels’）。然后，Python会对这个临时元组进行解包操作，把临时元组里面的两个元素分别放到等号左边的两个地方，于是，‘carrots’就会把a[i-1]里面原有的‘pretzels’替换，‘pretzels‘也会把a[i]里面原有的’carrots‘替换条。现在，出现在a[0]的位置就是’carrots‘，出现在a[1位置的就是’pretzels‘。做完解包操作后，系统会挥手这个临时元组。
+进入循环内部是，这两个元素分别是‘carrots’与‘pretzels’，于是，系统就创建临时元组(‘carrots’,‘pretzels’)。然后，Python会对这个临时元组进行解包操作，把临时元组里面的两个元素分别放到等号左边的两个地方，于是，‘carrots’就会把a[i-1]里面原有的‘pretzels’替换，‘pretzels‘也会把a[i]里面原有的’carrots‘替换条。现在，出现在a[0]的位置就是’carrots‘，出现在a[1位置的就是’pretzels‘。做完解包操作后，系统会挥手这个临时元组。
 
-​		解包操作还有一个重要的用法，可以用在for循环或者类似的结构中（例如推导与生成表达式，第27条），把复杂的数据拆分到相关的变量之中。下面这段代码没有采用解包操作，而是采用了传到的写法迭代snacks列表里面的元素。
+​		解包操作还有一个重要的用法，可以用在for循环或者类似的结构中(例如推导与生成表达式，第27条)，把复杂的数据拆分到相关的变量之中。下面这段代码没有采用解包操作，而是采用了传到的写法迭代snacks列表里面的元素。
 
 ```python
 snacks = [('bacon', 350), ('donut', 240), ('muffin', 190)]
@@ -1051,7 +1051,7 @@ for i in range(len(snacks)):
 #3: muffin has 190 calories
 ```
 
-​		这虽然能获取到正确结果，但是却很乱，因为snacks结构本身就是复杂列表，每一个元素都是一个元组，所以必须逐层访问才能查到具体的数据。下面换一种写法，首先调用内置的enumerate函数（参见第7条）获取当前要迭代的元组，然后针对这个元组进行解包，这样就可以直接获取到具体的name与calories值：
+​		这虽然能获取到正确结果，但是却很乱，因为snacks结构本身就是复杂列表，每一个元素都是一个元组，所以必须逐层访问才能查到具体的数据。下面换一种写法，首先调用内置的enumerate方法(参见第7条)获取当前要迭代的元组，然后针对这个元组进行解包，这样就可以直接获取到具体的name与calories值：
 
 ~~~python
 for rank, (name, calories) in enumerate(snacks, 1):
@@ -1064,7 +1064,7 @@ for rank, (name, calories) in enumerate(snacks, 1):
 
 ​		这是Python风格的写法，不需要再通过下标逐层访问了。这种写法简短且容易理解。
 
-​		Python的解包操作可以用在多个方面，例如构建列表（第13条）、给函数设计参数列表（第22条）、传递关键字参数（第23条）、接收多个返回值（第19条）等。
+​		Python的解包操作可以用在多个方面，例如构建列表(第13条)、给方法设计参数列表(第22条)、传递关键字参数(第23条)、接收多个返回值(第19条)等。
 
 ​		明智的使用解包操作，可以避免使用下标带来的麻烦，并且能让代码结果跟简单。
 
@@ -1073,4 +1073,95 @@ for rank, (name, calories) in enumerate(snacks, 1):
 * 解包操作是一种特殊的Python语法，只需要一行代码，就能把数据结构中的多个元素赋给多个值
 * 解包操作在Python中运用广泛，凡是可迭代的对象都可以拆分，无论里面还有多少层迭代结构
 * 尽量通过解包操作而不是下标访问数据，这能时代更简洁、明了
+
+## 第7条 尽量使用enumerate取代range
+
+​		Python 内置的range方法适合迭代一系列整数。
+
+```python
+from random import randint
+random_bits = 0
+for i in range(32):
+    if randint(0, 1):
+        random_bits |= 1 << i
+
+print(bin(random_bits))
+
+>>>
+0b10100010100010110001100001010111
+```
+
+​		当有一个数据结构要迭代时，比如字符串列表，可以直接在序列上循环：
+
+~~~python
+flavor_list = ['vanilla', 'chocolate', 'pecan', 'strawberry']
+for flavor in flavor_list:
+print(f'{flavor} is delicious')
+
+>>>
+vanilla is delicious
+chocolate is delicious
+pecan is delicious
+strawberry is delicious
+~~~
+
+​		当迭代一个列表数据时，经常会需要知道当前元素在列表中的位置。例如，遍历最喜欢的冰淇淋时，还要打印出他们的排行。可以通过传统的range方式：
+
+~~~python
+flavor_list = ['vanilla', 'chocolate', 'pecan', 'strawberry']
+for i in range(len(flavor_list)):
+flavor = flavor_list[i]
+print(f'{i + 1}: {flavor}')
+>>>
+1: vanilla
+2: chocolate
+3: pecan
+4: strawberry
+~~~
+
+​		与遍历flavor_list或range的其他例子相比，这看起来有些笨拙。我必须知道列表的长度。必须对数组下标，且多重步骤使它更难阅读。
+
+​		Python提供了内置方法enumerate来解决这个问题。enumerate方法能够把任何一种迭代器(iterator)封装成惰性生成器(lazy generator，见第30条)。当每次迭代的时候，enumerate产生对循环索引和给定迭代器的下一个值。这里，通过内置的next方法手动推进enumerate所返回的iterator，来演示enumerate的原理：
+
+```python
+flavor_list = ['vanilla', 'chocolate', 'pecan', 'strawberry']
+it = enumerate(flavor_list)
+print(next(it))
+print(next(it))
+>>>
+(0, 'vanilla')
+(1, 'chocolate')
+```
+
+​		enumerate输出的每一对数据，还可以通过for循环解包(见第6条)给两个变量。这样会使代码更清晰：
+
+~~~python
+for i, flavor in enumerate(flavor_list):
+	print(f'{i + 1}: {flavor}')
+>>>
+1: vanilla
+2: chocolate
+3: pecan
+4: strawberry
+~~~
+
+​		另外，还可通过enumerate的第二个参数指定其实序号，这样就不用在每次打印的时候去调整了。例如，本例可以从1开始计算：
+
+```python
+flavor_list = ['vanilla', 'chocolate', 'pecan', 'strawberry']
+for i, flavor in enumerate(flavor_list,1):
+    print(f'{i}: {flavor}')
+    
+>>>
+1: vanilla
+2: chocolate
+3: pecan
+4: strawberry
+```
+
+**要点**
+
+* enumerate方法可以通过简洁的代码迭代iterator，而且可以指出循环的序号
+* 直接用enumerate方法而非通过range方法指定下标的取值范围，再用下标去访问序列
+* 可以通过enumerate的第二个参数指定起始序号(默认为0)
 
