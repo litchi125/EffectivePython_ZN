@@ -1272,3 +1272,130 @@ Rosalind:: None
 * zip会创建惰性生成器，让它每次只生成一个元组，所以无论输入的数据有多长，他都是一个一个处理
 * 如果提供的迭代器长度不一致，但任意一个迭代完毕，zip停止运行
 * 如果想按照最长的迭代器遍历，那就使用内置itertools模块的zip_longest方法
+
+## 第9条  避免再for和while循环后写else块
+
+​		Python的循环有一项大多数编程语言都不支持的特性：可以在整个循环后立即写一个else块：
+
+```python
+for i in range(3):
+    print("Loop",i)
+else:
+    print("Else block!")
+    
+>>>
+Loop 0
+Loop 1
+Loop 2
+Else block!
+```
+
+​		奇怪的是，在整个循环结束后，尽然会执行else块。为什么这种情况下还叫做"else”呢？这应该是叫做“and”才对。在if/else结构中，else意味着前面的没有被执行或出现才执行else。在try/except结构中，except也是同样的意思：知道try里面的执行失败才执行except里面的语句。
+
+​		try/except/else结构的理念（参见第65条）与他们相似，他们都是指：如果没有异常需要处理，那就执行try里面的语句。try/finally结构中同样很直观，这种结构表示：不论前面的代码块执行情况如何，都要执行finally中的代码块。
+
+​		了解了else，except，finally在Python的用法后，Python小白可能会同样觉着for/else结构中的else也是这个意思，即如果循环没有从头到尾执行完，就执行else代码块。但事实却相反，如果循环没有执行完毕或者说提前跳出了循环，那么else代码块就不会执行。在循环中使用break语句实际上会跳过else代码块：
+
+```python
+for i in range(3):
+    print("Loop", i)
+    if i == 1:
+        break
+else:
+    print("Else block!")
+ 
+>>>
+Loop 0
+Loop 1
+```
+
+​		另外一种意想不到的是，如果循环体是空的，程序会立即执行else代码块：
+
+```python
+for x in []:
+    print("Never runs")
+else:
+    print("Else block!")
+>>>
+Else block!
+```
+
+​		while循环也是这样，如果首次遇到False，程序会立即运行else代码块:
+
+~~~python
+while False:
+    print("Never runs")
+else:
+    print("Else block!")
+>>>
+Else block!
+~~~
+
+​		这样设计的原因是，在利用循环搜索东西时发挥它的作用。例如，要判断两个数是否互为质数（也就是只用1这一个公因数）。这里，使用循环遍历所有可能的公约数并测试这些数。在尝试了所有选项后，循环结束。else代码块在两个数互质时执行，应为程序不会遇到中断：
+
+```python
+a = 4
+b = 9
+for i in range(2,min(a ,b)+1):
+    print("Testing",i)
+    if a %i ==0 and b % i ==0:
+        print("Not coprime")
+        break
+else:
+    print('Coprime')
+>>>
+
+Testing 2
+Testing 3
+Testing 4
+Coprime
+```
+
+​		事实上很少这样写代码。一般会写一个辅助函数来进行这样的计算。这样的辅助函数一般会有两种普遍写法。
+
+​		第一种情况是当找到了符合的情况就立即返回。如果循环执行完毕，就给一个默认值：
+
+```python
+def coprime(a, b):
+    for i in range(2, min(a, b) + 1):
+        if a % i == 0 and b % i == 0:
+            return False
+    return True
+
+
+print(coprime(4, 9))
+print(coprime(3, 6))
+
+>>>
+True
+False
+```
+
+​		第二种写法是，用变量来记录循环过程中有没有碰到这样的情况，如果有，就break提前跳出循环；如果没有，循环就执行完毕，无论如果，都返回那个变量的值：
+
+```python
+def coprime_alternate(a, b):
+    is_coprime = True
+    for i in range(2, min(a, b) + 1):
+        if a % i == 0 and b % i == 0:
+            is_coprime = False
+            break
+    return is_coprime
+
+
+print(coprime_alternate(4, 9))
+print(coprime_alternate(3, 6))
+
+>>>
+True
+False
+```
+
+​		这两种写法都可以让一个新的读者很容易就理解。根据不同情况，应该选用不同的写法。然而，for/else结构或者while/else结构虽然可以实现逻辑表达，但这种结构很会给读者或者自己带来困惑，弊大于利。因为for与while循环这种简单的结构，在Python李健读起来应该相当明了才对，如果把else代码块紧跟在他们后面，就会让代码产生歧义。所以，请不要这么写。
+
+**要点**
+
+* Python拥有在for或者while循环后紧跟else代码块的这种语法
+* 只有在整个循环没有因为break提前跳出的情况，else代码块才会执行
+* 避免在循环后使用else代码，这样代码就太难看懂了
+
